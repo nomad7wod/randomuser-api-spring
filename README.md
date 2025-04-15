@@ -83,11 +83,6 @@ Este archivo HTML realiza una petición `fetch()` al back-end para mostrar las p
 
 ## Conclusión
 
-El proyecto cumple con todos los requisitos del reto técnico bajo el enfoque back-end, incluyendo:
-
-- Una API REST documentada y funcional
-- Consumo de datos externos y transformación a DTO
-- Visualización desde un front sencillo
-- Documentación Swagger lista para uso profesional
+El proyecto cumple con todos los requisitos del reto técnico bajo el enfoque back-end.
 
 Estoy abierto a recibir feedback para seguir creciendo como desarrollador.
