@@ -1,10 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usuarios Random</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
+            color: #333;
+
+        }
+        header {
+            background: #0066cc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        #refresh-btn {
+            background-color: #ffffff;
+            color: #0066cc;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            margin-top: 10px;
+        }
+        #refresh-btn:hover {
+            background-color: #e6e6e6;
+            border-color: #e6e6e6;
+        }
+        h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        #person-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 30px 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid #0066cc;
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            color: #0066cc;
+        }
+        .card p {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
+<header>
+    <h1>Lista de Personas</h1>
+    <button id="refresh-btn" onclick="cargarUsuarios()">Actualizar lista</button>
+</header>
+<div id="person-list"></div>
 
+<script>
+    function cargarUsuarios() {
+
+        const container = document.getElementById('person-list');
+        container.innerHTML = ''; // LImpiando los datos de la  llamada pasada
+
+        fetch('http://localhost:8080/api/personas').then(res => res.json()).then(data => {
+            if (!Array.isArray(data)) throw new Error("Respuesta no es un arreglo");
+
+            data.forEach(person => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.innerHTML = `
+                  <img src="${person.fotografia}" alt="Foto de ${person.nombre}" />
+                  <h3>${person.nombre}</h3>
+                  <p><strong>Género:</strong> ${person.genero}</p>
+                  <p><strong>Ubicación:</strong> ${person.ubicacion}</p>
+                  <p><strong>Email:</strong> ${person.correo}</p>
+                  <p><strong>Nacimiento:</strong> ${new Date(person.fechaNacimiento).toLocaleDateString()}</p>`;
+                container.appendChild(div);
+            });
+        })
+            .catch(err => console.error('Error al cargar la info de las personas:', err));
+    }
+
+    // Para el refresh de pagina
+    window.onload = cargarUsuarios;
+</script>
 </body>
 </html>
+
